@@ -89,14 +89,14 @@ public class MontyHallGameTest {
         //Given price 0 player 0
         Random random = mock(Random.class);
         when(random.nextInt(eq(NUMBER_OF_DOORS_LEFT)))
-               .thenReturn(1)
-               .thenReturn(2);
+                .thenReturn(1)
+                .thenReturn(2);
 
         MontyHallGame montyHallGame = new MontyHallGame(random, MontyHallSimulator.NUMBER_OF_DOORS_THREE);
         montyHallGame.aIPickLastDoor(); // 2
         assertThat(montyHallGame.getAIDoor(), is(2));
         //When
-         montyHallGame.playerSwitchDoor();
+        montyHallGame.playerSwitchDoor();
         //Then
         assertThat(montyHallGame.getPlayerDoor(), is(1));
         verify(random, times(1)).nextInt(2);
