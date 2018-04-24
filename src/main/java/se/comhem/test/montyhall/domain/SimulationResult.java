@@ -43,7 +43,8 @@ public class SimulationResult {
     }
 
     public String toString() {
-        return format("Strategy {0} Simulations: {1} wins: {2} losses: {3} Percentage of wins: {4}", gameStrategy, numberOfSimulations, numberOfWins, numberOfLosses, calculateWinPercentage());
+        return format("Strategy {0} Simulations: {1} wins: {2} losses: {3} Percentage of wins: {4}",
+                gameStrategy, numberOfSimulations, numberOfWins, numberOfLosses, calculateWinPercentage());
     }
 
     private float calculateWinPercentage() {

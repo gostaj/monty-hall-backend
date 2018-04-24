@@ -7,18 +7,27 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 class MontyHallGame {
+
     private final int NUMBER_OF_DOORS;
-    private final IntPredicate removePlayerDoor = number -> number != this.playerDoor;
-    private final IntPredicate removePriceDoor = number -> number != this.priceDoor;
-    private final IntPredicate removeAIDoor = number -> number != this.aiDoor;
-    private Random random;
-    private int priceDoor;
+
+    private int prizeDoor;
     private int playerDoor;
     private int aiDoor;
 
-    MontyHallGame(final Random random, final int number_of_doors) {
+    private final IntPredicate isNotPlayerDoor = number -> number != playerDoor;
+    private final IntPredicate isNotPrizeDoor = number -> number != prizeDoor;
+    private final IntPredicate isNotAIDoor = number -> number != aiDoor;
+
+    private Random random;
+
+    MontyHallGame(final int numberOfDoors) {
+        random = new Random();
+        NUMBER_OF_DOORS = numberOfDoors;
+    }
+
+    MontyHallGame(final Random random, final int numberOfDoors) {
         this.random = random;
-        this.NUMBER_OF_DOORS = number_of_doors;
+        NUMBER_OF_DOORS = numberOfDoors;
     }
 
     int getPlayerDoor() {
@@ -29,12 +38,12 @@ class MontyHallGame {
         return this.aiDoor;
     }
 
-    int getPriceDoor() {
-        return this.priceDoor;
+    int getPrizeDoor() {
+        return this.prizeDoor;
     }
 
-    void randomizePriceDoor() {
-        this.priceDoor = getRandomDoor();
+    void randomizePrizeDoor() {
+        this.prizeDoor = getRandomDoor();
     }
 
     void randomizePlayerDoor() {
@@ -46,28 +55,32 @@ class MontyHallGame {
     }
 
     void aIPickLastDoor() {
-        this.aiDoor = this.chooseLastDoor(this.NUMBER_OF_DOORS, removePlayerDoor, removePriceDoor);
+        this.aiDoor = this.chooseAnyRemainingDoor(this.NUMBER_OF_DOORS, isNotPlayerDoor.and(isNotPrizeDoor));
     }
 
     void playerSwitchDoor() {
-        this.playerDoor = chooseLastDoor(NUMBER_OF_DOORS, removePlayerDoor, removeAIDoor);
+        this.playerDoor = chooseAnyRemainingDoor(NUMBER_OF_DOORS, isNotPlayerDoor.and(isNotAIDoor));
     }
 
-    private int chooseLastDoor(final int number_of_doors, IntPredicate removeFirstDoorPredicate, IntPredicate removeSecondDoorPredicate) {
+    private int chooseAnyRemainingDoor(final int number_of_doors, IntPredicate notSelectedDoors) {
         IntStream intStream = IntStream.range(0, number_of_doors)
-                .filter(removeFirstDoorPredicate)
-                .filter(removeSecondDoorPredicate);
+                .filter(notSelectedDoors);
         List<Integer> remainingDoors = intStream.boxed().collect(Collectors.toList());
-        return remainingDoors.size() == 1 ? remainingDoors.get(0) : remainingDoors.get(this.random.nextInt(remainingDoors.size()));
+        return remainingDoors.size() == 1 ?
+                remainingDoors.get(0) : getRandomElementFromList(remainingDoors);
+    }
+
+    private <T> T getRandomElementFromList(List<T> list) {
+        return list.get(this.random.nextInt(list.size()));
     }
 
     boolean hasPlayerWon() {
-        return this.playerDoor == this.priceDoor;
+        return this.playerDoor == this.prizeDoor;
     }
 
     void reset() {
         this.playerDoor = 0;
         this.aiDoor = 0;
-        this.priceDoor = 0;
+        this.prizeDoor = 0;
     }
 }

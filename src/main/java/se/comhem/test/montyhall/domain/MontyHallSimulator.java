@@ -3,27 +3,31 @@ package se.comhem.test.montyhall.domain;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;
-import java.util.stream.IntStream;
 
 @Component
 public class MontyHallSimulator {
+
     static final int NUMBER_OF_DOORS_THREE = 3;
     private Random random = new Random();
 
     public SimulationResult simulate(GameStrategy gameStrategy, int numberOfSimulations) {
         SimulationResult simulationResult = new SimulationResult(gameStrategy, numberOfSimulations);
-        MontyHallGame montyHallGame = new MontyHallGame(new Random(), NUMBER_OF_DOORS_THREE);
+        MontyHallGame montyHallGame = new MontyHallGame(NUMBER_OF_DOORS_THREE);
 
-        IntStream.range(0, numberOfSimulations).forEach(i -> {
-            montyHallGame.randomizePriceDoor();
-            montyHallGame.randomizePlayerDoor();
-            montyHallGame.aIPickLastDoor();
-            makeGameStrategyDecision(gameStrategy, montyHallGame);
+        for (int i = 0; i < numberOfSimulations; i++) {
+            simulateOneGame(montyHallGame, gameStrategy);
             reportResult(montyHallGame, simulationResult);
             montyHallGame.reset();
-        });
+        }
 
         return simulationResult;
+    }
+
+    private void simulateOneGame(MontyHallGame montyHallGame, GameStrategy gameStrategy) {
+        montyHallGame.randomizePrizeDoor();
+        montyHallGame.randomizePlayerDoor();
+        montyHallGame.aIPickLastDoor();
+        makeGameStrategyDecision(gameStrategy, montyHallGame);
     }
 
     private void makeGameStrategyDecision(GameStrategy gameStrategy, MontyHallGame montyHallGame) {

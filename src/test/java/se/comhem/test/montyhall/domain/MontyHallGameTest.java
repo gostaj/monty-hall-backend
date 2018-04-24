@@ -10,20 +10,21 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 public class MontyHallGameTest {
+
     private static final int NUMBER_OF_DOORS_LEFT = 2;
 
     @Test
-    public void shouldHaveZeroHasDefaults() {
+    public void shouldHaveDoorsSetToZeroAsDefaults() {
         //Given
         MontyHallGame montyHallGame = new MontyHallGame(new Random(), MontyHallSimulator.NUMBER_OF_DOORS_THREE);
         //Then
-        assertThat(montyHallGame.getPriceDoor(), is(0));
+        assertThat(montyHallGame.getPrizeDoor(), is(0));
         assertThat(montyHallGame.getAIDoor(), is(0));
         assertThat(montyHallGame.getPlayerDoor(), is(0));
     }
 
     @Test
-    public void shouldRandomlySetPriceBehindADoor() {
+    public void shouldRandomlySetPrizeBehindADoor() {
         //Given
         Random random = mock(Random.class);
         when(random.nextInt(eq(MontyHallSimulator.NUMBER_OF_DOORS_THREE)))
@@ -31,9 +32,9 @@ public class MontyHallGameTest {
 
         MontyHallGame montyHallGame = new MontyHallGame(random, MontyHallSimulator.NUMBER_OF_DOORS_THREE);
         //When
-        montyHallGame.randomizePriceDoor();
+        montyHallGame.randomizePrizeDoor();
         //Then
-        assertThat(montyHallGame.getPriceDoor(), is(1));
+        assertThat(montyHallGame.getPrizeDoor(), is(1));
         verify(random, times(1)).nextInt(MontyHallSimulator.NUMBER_OF_DOORS_THREE);
     }
 
@@ -52,7 +53,7 @@ public class MontyHallGameTest {
     }
 
     @Test
-    public void shouldRandomPickTheLastDoorWhenPriceAndPlayerIsSameDoor() {
+    public void shouldRandomlyPickTheLastDoorWhenPrizeAndPlayerIsSameDoor() {
         Random random = mock(Random.class);
         when(random.nextInt(eq(NUMBER_OF_DOORS_LEFT)))
                 .thenReturn(1);
@@ -65,7 +66,7 @@ public class MontyHallGameTest {
     }
 
     @Test
-    public void shouldPickTheLastDoorWhenPriceAndPlayerIsNotSameDoor() {
+    public void shouldPickTheLastDoorWhenPrizeAndPlayerIsNotSameDoor() {
         Random random = mock(Random.class);
         when(random.nextInt(eq(MontyHallSimulator.NUMBER_OF_DOORS_THREE)))
                 .thenReturn(0)
@@ -75,7 +76,7 @@ public class MontyHallGameTest {
                 .thenReturn(0);
 
         MontyHallGame montyHallGame = new MontyHallGame(random, MontyHallSimulator.NUMBER_OF_DOORS_THREE);
-        montyHallGame.randomizePriceDoor(); // 0
+        montyHallGame.randomizePrizeDoor(); // 0
         montyHallGame.randomizePlayerDoor(); // 1
         //When
         montyHallGame.aIPickLastDoor();
@@ -85,8 +86,8 @@ public class MontyHallGameTest {
     }
 
     @Test
-    public void shouldBeAbleSwitchDoor() {
-        //Given price 0 player 0
+    public void shouldBeAbleToSwitchDoor() {
+        //Given prize 0 player 0
         Random random = mock(Random.class);
         when(random.nextInt(eq(NUMBER_OF_DOORS_LEFT)))
                 .thenReturn(1)
@@ -104,7 +105,7 @@ public class MontyHallGameTest {
     }
 
     @Test
-    public void shouldTellIfPlayerHasNotChosenThePriceDoor() {
+    public void shouldTellIfPlayerHasNotChosenThePrizeDoor() {
         //Given
         Random random = mock(Random.class);
         when(random.nextInt(eq(MontyHallSimulator.NUMBER_OF_DOORS_THREE)))
@@ -113,7 +114,7 @@ public class MontyHallGameTest {
 
         MontyHallGame montyHallGame = new MontyHallGame(random, MontyHallSimulator.NUMBER_OF_DOORS_THREE);
 
-        montyHallGame.randomizePriceDoor(); // 0
+        montyHallGame.randomizePrizeDoor(); // 0
         montyHallGame.randomizePlayerDoor(); // 1
         montyHallGame.aIPickLastDoor(); // 2
         //When
@@ -123,8 +124,8 @@ public class MontyHallGameTest {
     }
 
     @Test
-    public void shouldTellIfPlayerHasChosenThePriceDoor() {
-        //Given player 0 price 0
+    public void shouldTellIfPlayerHasChosenThePrizeDoor() {
+        //Given player 0 prize 0
         MontyHallGame montyHallGame = new MontyHallGame(new Random(), MontyHallSimulator.NUMBER_OF_DOORS_THREE);
         //When
         boolean hasWon = montyHallGame.hasPlayerWon();
@@ -142,11 +143,11 @@ public class MontyHallGameTest {
 
         MontyHallGame montyHallGame = new MontyHallGame(random, MontyHallSimulator.NUMBER_OF_DOORS_THREE);
 
-        montyHallGame.randomizePriceDoor(); // 0
+        montyHallGame.randomizePrizeDoor(); // 0
         montyHallGame.randomizePlayerDoor(); // 1
         montyHallGame.aIPickLastDoor(); // 2
 
-        assertThat(montyHallGame.getPriceDoor(), is(0));
+        assertThat(montyHallGame.getPrizeDoor(), is(0));
         assertThat(montyHallGame.getPlayerDoor(), is(1));
         assertThat(montyHallGame.getAIDoor(), is(2));
         // When
@@ -154,6 +155,6 @@ public class MontyHallGameTest {
         //Then
         assertThat(montyHallGame.getAIDoor(), is(0));
         assertThat(montyHallGame.getPlayerDoor(), is(0));
-        assertThat(montyHallGame.getPriceDoor(), is(0));
+        assertThat(montyHallGame.getPrizeDoor(), is(0));
     }
 }
