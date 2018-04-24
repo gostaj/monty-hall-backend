@@ -30,10 +30,12 @@ class MontyHallController {
 
     @RequestMapping("/simulate")
     @ResponseBody
-    public SimulationResult playGame(@RequestParam(value="iterations", defaultValue="100") Integer iterations,
-                                               @RequestParam(value="strategy") GameStrategy strategy)  {
+    public SimulationResult simulate(@RequestParam(value="iterations", defaultValue="100") Integer iterations,
+                                     @RequestParam("strategy") GameStrategy strategy)  {
         if(iterations < 0 || iterations > MAX_ITERATIONS){
-            throw new IllegalArgumentException(format("Request parameter iterations must be positive number or not greater than {0}, was {1}", iterations, MAX_ITERATIONS));
+            throw new IllegalArgumentException(format(
+                    "Request parameter iterations must be positive number or not greater than {0}, was {1}",
+                    iterations, MAX_ITERATIONS));
         }
         return montyHallSimulator.simulate(strategy, iterations);
     }
