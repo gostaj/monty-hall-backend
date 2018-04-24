@@ -12,20 +12,6 @@ import static org.mockito.Mockito.*;
 public class MontyHallGameTest {
     private static final int NUMBER_OF_DOORS_LEFT = 2;
 
-    //A montyHall should have 3 doors and price at 0 and user picked at 0
-    //A montyHall should be able to random set price
-    //A monty hall should be able to reset
-    //A montyHall should have a price random behind a door
-    //A montyHall should be able to tell on where the price is behind
-    //A player should be able to pick a door at random
-    //A montyHall should be able to remember that player pick
-    //A montyHall AI should be able to pick the third door that is not picked by player and do not contains the price
-    //If player has chosen the price there is a bug!
-    //A player should be able to pick the other door not picked by the AI montyHall (SWITCH or KEEP)
-    //A player should be able to see behind it picked door
-
-    //A MontyHallSimulator should be able to run x MontyHall games with a given strategy
-
     @Test
     public void shouldHaveZeroHasDefaults() {
         //Given
